@@ -11,9 +11,41 @@ class MainApp extends StatefulWidget {
   @override
   State<MainApp> createState() => _MainAppState();
 }
+enum Posibilidades {occidental, romano, arabe}
+
+class Selecciones extends StatefulWidget {
+  const Selecciones({ super.key });
+
+  @override
+  State<Selecciones> createState() => _SeleccionesState();
+}
+
+class _SeleccionesState extends State<Selecciones> {
+  Posibilidades posibilidadActual = Posibilidades.occidental;
+  @override
+  Widget build(BuildContext context) {
+    return SegmentedButton(
+      showSelectedIcon: false,
+    segments: [
+    const ButtonSegment(value: Posibilidades.occidental, icon: Icon(Icons.cloud_outlined), label: Text( "Occidental")),
+    ButtonSegment(value: Posibilidades.romano, icon: const Icon(Icons.star_border_rounded), label: Text(10.toRomanNumeralString() ?? 'Romano')),
+    const ButtonSegment(value: Posibilidades.arabe, icon: Icon(Icons.favorite_border_rounded), label: Text( "Arabe")),
+  ],
+   selected: {posibilidadActual},
+   onSelectionChanged: (posibilidad){
+    setState(() {
+    posibilidadActual = posibilidad.first;
+    });
+   },
+  );
+  }
+}
 
 class _MainAppState extends State<MainApp> {
+
+
   int valorEstado = 0;
+  late String valorEstado2 = valorEstado.toString();
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
@@ -46,9 +78,11 @@ class _MainAppState extends State<MainApp> {
           ],
         ),
         body: Center(
-          child: Text('$valorEstado', style: const TextStyle(fontSize: 50)),
+          child: Text('$valorEstado'.toRomanNumeralValue() ?? 'Romano', style: const TextStyle(fontSize: 50)),
         ),
+        
       ),
     );
   }
 }
+
